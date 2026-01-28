@@ -6,11 +6,11 @@ import com.airtribe.learntrack.repository.StudentRepository;
 import java.util.Scanner;
 
 public class StudentService {
-    private Scanner sc;
-    private StudentRepository repository;
-    public StudentService(Scanner sc){
+    private final Scanner sc;
+    private final StudentRepository repository;
+    public StudentService(Scanner sc, StudentRepository studentRepository){
         this.sc = sc;
-        this.repository = new StudentRepository();
+        this.repository = studentRepository;
     }
 
     public void studentMenu(){
@@ -21,6 +21,7 @@ public class StudentService {
             System.out.print("Enter your choice: \n");
             System.out.println("1. Add new student");
             System.out.println("2. Display all students");
+            System.out.println("3. Deactivate a student");
             System.out.println("3. Back");
 
             choice = sc.nextInt();
@@ -34,12 +35,15 @@ public class StudentService {
                     displayStudents();
                     break;
                 case 3:
+                    deactivateStudent();
+                    break;
+                case 4:
                     System.out.println("Returning back to main menu");
                     break;
                 default:
                     System.out.println("Invalid choice");
             }
-        }while(choice!=3);
+        }while(choice!=4);
 
     }
     private void addStudent(){
@@ -55,7 +59,19 @@ public class StudentService {
     }
     private void displayStudents(){
         for(Student s : repository.getAllStudents()){
-            System.out.println(s);
+            if(s.getStatus())
+                System.out.println(s);
         }
+    }
+    private void deactivateStudent(){
+        System.out.println("Enter student id:");
+        int id  = sc.nextInt();
+        Student student = repository.getStudentById(id);
+        if(student == null){
+            System.out.println("Student not found!");
+            return;
+        }
+        student.setStatus(false);
+        System.out.println("Deactivate student successfully!");
     }
 }

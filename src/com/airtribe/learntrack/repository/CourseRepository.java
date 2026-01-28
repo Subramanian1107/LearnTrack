@@ -14,4 +14,11 @@ public class CourseRepository {
     public List<Course> getAllCourses(){
         return courseList;
     }
+    public Course getCourseById(int id){
+        for(Course course:courseList){
+            if(course.getId() == id)
+                return course;
+        }
+        return null;
+    }
 }

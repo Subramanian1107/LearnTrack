@@ -15,4 +15,12 @@ public class StudentRepository {
         return studentList;
     }
 
+    public Student getStudentById(int id){
+        for(Student student:studentList){
+            if(student.getId() == id)
+                return student;
+        }
+        return null;
+    }
+
 }

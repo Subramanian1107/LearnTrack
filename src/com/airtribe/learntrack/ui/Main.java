@@ -1,5 +1,8 @@
 package com.airtribe.learntrack.ui;
 
+import com.airtribe.learntrack.repository.CourseRepository;
+import com.airtribe.learntrack.repository.EnrollmentRepository;
+import com.airtribe.learntrack.repository.StudentRepository;
 import com.airtribe.learntrack.service.CourseService;
 import com.airtribe.learntrack.service.EnrollmentService;
 import com.airtribe.learntrack.service.StudentService;
@@ -9,9 +12,23 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
-        StudentService studentService = new StudentService(sc);
-        CourseService courseService = new CourseService(sc);
-        EnrollmentService enrollmentService = new EnrollmentService(sc);
+        StudentRepository studentRepository = new StudentRepository();
+        CourseRepository courseRepository = new CourseRepository();
+        EnrollmentRepository enrollmentRepository = new EnrollmentRepository();
+
+        StudentService studentService =
+                new StudentService(sc, studentRepository);
+
+        CourseService courseService =
+                new CourseService(sc, courseRepository);
+
+        EnrollmentService enrollmentService =
+                new EnrollmentService(
+                        sc,
+                        enrollmentRepository,
+                        studentRepository,
+                        courseRepository
+                );
         int choice;
 
         System.out.println("\n=== LearnTrack ===");
