@@ -1,6 +1,7 @@
 package com.airtribe.learntrack.repository;
 
 import com.airtribe.learntrack.entity.Student;
+import com.airtribe.learntrack.exception.EntityNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ public class StudentRepository {
 
     public void addStudent(Student student){
         studentList.add(student);
+
     }
     public List<Student> getAllStudents(){
         return studentList;
@@ -20,7 +22,9 @@ public class StudentRepository {
             if(student.getId() == id)
                 return student;
         }
-        return null;
+        throw new EntityNotFoundException(
+                "Student not found with id: " + id
+        );
     }
 
 }

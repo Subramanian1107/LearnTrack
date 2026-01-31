@@ -1,6 +1,7 @@
 package com.airtribe.learntrack.repository;
 
 import com.airtribe.learntrack.entity.Course;
+import com.airtribe.learntrack.exception.EntityNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,8 @@ public class CourseRepository {
             if(course.getId() == id)
                 return course;
         }
-        return null;
+        throw new EntityNotFoundException(
+                "Course not found with id: " + id
+        );
     }
 }

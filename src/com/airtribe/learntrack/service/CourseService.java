@@ -9,10 +9,16 @@ public class CourseService {
     private final Scanner sc;
     private final CourseRepository repository;
 
-    public CourseService(Scanner sc, CourseRepository courseRepository){
+    private final EnrollmentService enrollmentService;
+
+    public CourseService(Scanner sc,
+                         CourseRepository courseRepository,
+                         EnrollmentService enrollmentService) {
         this.sc = sc;
         this.repository = courseRepository;
+        this.enrollmentService = enrollmentService;
     }
+
 
     public void courseMenu(){
         int choice;
@@ -46,12 +52,14 @@ public class CourseService {
         }while(choice!=4);
     }
     private void addCourse(){
-        // Adding course using course id
-        System.out.println("Enter course id:");
-        int id = sc.nextInt();
+        sc.nextLine();
         System.out.println("Enter course name:");
-        String name = sc.next();
-        Course course = new Course(id,name);
+        String name = sc.nextLine();
+        System.out.println("Enter course description:");
+        String description = sc.nextLine();
+        System.out.println("Enter course duration(in weeks):");
+        int duration = sc.nextInt();
+        Course course = new Course(name,description,duration);
         repository.addCourse(course);
     }
     private void displayAllCourses(){
@@ -76,15 +84,17 @@ public class CourseService {
         int statusChoice = sc.nextInt();
         if(statusChoice == 1){
             course.setStatus(true);
+            System.out.println("Activated course successfully!");
         }
         else if(statusChoice == 2){
             course.setStatus(false);
+            enrollmentService.cancelEnrollmentsForCourse(id);
+            System.out.println("Deactivated course successfully!");
         }
         else{
             System.out.println("Invalid status choice!");
             return;
         }
-        System.out.println("Course status updated successfully!");
     }
 
 

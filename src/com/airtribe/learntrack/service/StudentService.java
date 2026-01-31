@@ -1,16 +1,23 @@
 package com.airtribe.learntrack.service;
 
 import com.airtribe.learntrack.entity.Student;
+import com.airtribe.learntrack.exception.InvalidInputException;
 import com.airtribe.learntrack.repository.StudentRepository;
+import com.airtribe.learntrack.util.InputValidator;
 
 import java.util.Scanner;
 
 public class StudentService {
     private final Scanner sc;
     private final StudentRepository repository;
-    public StudentService(Scanner sc, StudentRepository studentRepository){
+    private final EnrollmentService enrollmentService;
+
+    public StudentService(Scanner sc,
+                          StudentRepository studentRepository,
+                          EnrollmentService enrollmentService) {
         this.sc = sc;
         this.repository = studentRepository;
+        this.enrollmentService = enrollmentService;
     }
 
     public void studentMenu(){
@@ -22,7 +29,7 @@ public class StudentService {
             System.out.println("1. Add new student");
             System.out.println("2. Display all students");
             System.out.println("3. Deactivate a student");
-            System.out.println("3. Back");
+            System.out.println("4. Back");
 
             choice = sc.nextInt();
             switch(choice){
@@ -47,17 +54,45 @@ public class StudentService {
 
     }
     private void addStudent(){
-        System.out.println("Enter student id:");
-        int id = sc.nextInt();
-        System.out.println("Enter student name:");
-        String name = sc.next();
-        System.out.println("Enter student age:");
-        int age = sc.nextInt();
-        Student student = new Student(id,name,age);
-        repository.addStudent(student);
-        System.out.println("Student added successfully!");
+        try{
+            System.out.println("Enter student first name:");
+            String firstName = sc.next();
+            InputValidator.validateName(firstName);
+            System.out.println("Enter student last name (or '-' to skip)::");
+            String lastName = sc.next();
+            if(lastName.equals("-"))    lastName = "";
+            if(!lastName.isEmpty())
+                InputValidator.validateName(lastName);
+            System.out.println("Enter student email Id (or '-' to skip):");
+            String email = sc.next();
+            if(email.equals("-"))    email = "";
+            if(!email.isEmpty())
+                InputValidator.validateEmail(email);
+            System.out.println("Enter batch:");
+            int batch = sc.nextInt();
+            InputValidator.validateBatch(batch);
+            System.out.println("Enter student age:");
+            int age = sc.nextInt();
+            InputValidator.validateAge(age);
+            Student student;
+            if(lastName.isEmpty() && email.isEmpty())
+                student = new Student(firstName,batch,age);
+            else if(lastName.isEmpty())
+                student = new Student(firstName,email,batch,age,true);
+            else if(email.isEmpty())
+                student = new Student(firstName,lastName,batch,age);
+            else
+                student = new Student(firstName,lastName,email,batch,age);
+            repository.addStudent(student);
+            System.out.println("Student added successfully!");
+        }
+        catch(InvalidInputException ex){
+            System.out.println("Error: " + ex.getMessage());
+        }
+
     }
     private void displayStudents(){
+        System.out.println("Student details");
         for(Student s : repository.getAllStudents()){
             if(s.getStatus())
                 System.out.println(s);
@@ -72,6 +107,7 @@ public class StudentService {
             return;
         }
         student.setStatus(false);
-        System.out.println("Deactivate student successfully!");
+        enrollmentService.cancelEnrollmentsForStudent(id);
+        System.out.println("Deactivated student successfully!");
     }
 }

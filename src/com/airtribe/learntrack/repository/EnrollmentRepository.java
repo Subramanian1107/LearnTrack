@@ -21,6 +21,15 @@ public class EnrollmentRepository {
         }
         return result;
     }
+    public List<Enrollment> getEnrollmentsByCourseId(int courseId){
+        List<Enrollment> result = new ArrayList<>();
+        for (Enrollment e : enrollments) {
+            if (e.getCourseId() == courseId) {
+                result.add(e);
+            }
+        }
+        return result;
+    }
 
     public Enrollment findEnrollment(int studentId, int courseId){
         for(Enrollment e: enrollments){

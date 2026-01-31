@@ -16,11 +16,9 @@ public class Main {
         CourseRepository courseRepository = new CourseRepository();
         EnrollmentRepository enrollmentRepository = new EnrollmentRepository();
 
-        StudentService studentService =
-                new StudentService(sc, studentRepository);
 
-        CourseService courseService =
-                new CourseService(sc, courseRepository);
+
+
 
         EnrollmentService enrollmentService =
                 new EnrollmentService(
@@ -29,6 +27,10 @@ public class Main {
                         studentRepository,
                         courseRepository
                 );
+        StudentService studentService =
+                new StudentService(sc, studentRepository,enrollmentService);
+        CourseService courseService =
+                new CourseService(sc, courseRepository,enrollmentService);
         int choice;
 
         System.out.println("\n=== LearnTrack ===");

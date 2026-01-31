@@ -3,6 +3,7 @@ package com.airtribe.learntrack.service;
 import com.airtribe.learntrack.entity.Course;
 import com.airtribe.learntrack.entity.Enrollment;
 import com.airtribe.learntrack.entity.Student;
+import com.airtribe.learntrack.exception.EntityNotFoundException;
 import com.airtribe.learntrack.repository.CourseRepository;
 import com.airtribe.learntrack.repository.EnrollmentRepository;
 import com.airtribe.learntrack.repository.StudentRepository;
@@ -24,7 +25,7 @@ public class EnrollmentService {
 
     public void enrollmentMenu(){
         int choice;
-        System.out.println("---Course Menu---");
+        System.out.println("---Enrollment Menu---");
         do{
             System.out.println("Enter choice");
             System.out.println("1. Add new enrollment");
@@ -45,41 +46,48 @@ public class EnrollmentService {
                     // Change status of enrollment to completed or cancelled
                     updateEmploymentStatus();
                     break;
+                case 4:
+                    System.out.println("Returning back to main menu..");
+                    break;
                 default:
                     System.out.println("Invalid choice");
             }
         }while(choice!=4);
     }
     private void addEnrollment(){
-        System.out.print("Enter Student ID: ");
-        int studentId = sc.nextInt();
+        try{
+            System.out.print("Enter Student ID: ");
+            int studentId = sc.nextInt();
+            Student student = studentRepository.getStudentById(studentId);
+            if (!student.getStatus()) {
+                System.out.println("Inactive student cannot enroll!");
+                return;
+            }
+            System.out.print("Enter Course ID: ");
+            int courseId = sc.nextInt();
+            Course course = courseRepository.getCourseById(courseId);
+            if (!course.getStatus()) {
+                System.out.println("Inactive course cannot be enrolled!");
+                return;
+            }
+            Enrollment existing =
+                    repository.findEnrollment(studentId, courseId);
 
-        System.out.print("Enter Course ID: ");
-        int courseId = sc.nextInt();
+            if (existing != null) {
+                System.out.println("Student already enrolled!");
+                return;
+            }
 
-        Student student = studentRepository.getStudentById(studentId);
-        Course course = courseRepository.getCourseById(courseId);
-        if (!student.getStatus()) {
-            System.out.println("Inactive student cannot enroll!");
-            return;
+            Enrollment enrollment =
+                    new Enrollment(studentId, courseId);
+            repository.addEnrollment(enrollment);
+
+            System.out.println("Enrollment successful!");
         }
-        if (!course.getStatus()) {
-            System.out.println("Inactive course cannot be enrolled!");
-            return;
+
+        catch(EntityNotFoundException ex){
+            System.out.println(ex.getMessage());
         }
-        Enrollment existing =
-                repository.findEnrollment(studentId, courseId);
-
-        if (existing != null) {
-            System.out.println("Student already enrolled!");
-            return;
-        }
-
-        Enrollment enrollment =
-                new Enrollment(studentId, courseId);
-        repository.addEnrollment(enrollment);
-
-        System.out.println("Enrollment successful!");
     }
     private void displayEnrollmentsForStudent(){
         System.out.print("Enter Student ID: ");
@@ -127,4 +135,25 @@ public class EnrollmentService {
         System.out.println("Employee status updated!");
 
     }
+    public void cancelEnrollmentsForStudent(int studentId) {
+        List<Enrollment> enrollments =
+                repository.getEnrollmentsByStudentId(studentId);
+
+        for (Enrollment e : enrollments) {
+            e.setStatus("CANCELLED");
+        }
+
+        System.out.println("All enrollments cancelled for student " + studentId);
+    }
+    public void cancelEnrollmentsForCourse(int courseId) {
+        List<Enrollment> enrollments = repository.getEnrollmentsByCourseId(courseId);
+
+        for (Enrollment e : enrollments) {
+            e.setStatus("CANCELLED");
+        }
+
+        System.out.println("All enrollments cancelled for course " + courseId);
+    }
+
+
 }
