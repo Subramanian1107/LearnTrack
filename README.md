@@ -100,6 +100,13 @@ com.airtribe.learntrack
 ## 🧪 Sample Console Output
 
 ```
+=== LearnTrack ===
+Enter your choice: 
+1. Student Management
+2. Course Management
+3. Enrollment Management
+4. Exit
+
 === Student Menu ===
 1. Add new student
 2. Display all students
