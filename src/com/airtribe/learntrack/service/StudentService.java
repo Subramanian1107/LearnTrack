@@ -95,7 +95,7 @@ public class StudentService {
         System.out.println("Student details");
         for(Student s : repository.getAllStudents()){
             if(s.getStatus())
-                System.out.println(s);
+                s.display();
         }
     }
     private void deactivateStudent(){

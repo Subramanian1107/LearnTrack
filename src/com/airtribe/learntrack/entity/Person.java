@@ -31,10 +31,12 @@ public class Person {
     public void setStatus(boolean flag){
         active = flag;
     }
-    @Override
-    public String toString() {
-        return firstName + " " +
-                (lastName != null ? lastName : "") +
-                " | Age: " + age;
+    public void display() {
+        System.out.println(
+                "Name: " + firstName + " " +
+                        (lastName != null ? lastName : "") +
+                        " | Age: " + age +
+                        " | Email: " + (email != null ? email : "N/A")
+        );
     }
 }

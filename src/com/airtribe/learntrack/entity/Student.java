@@ -41,13 +41,13 @@ public class Student extends Person {
     public int getBatch(){return batch;}
 
     @Override
-    public String toString() {
-        return "ID: " + studentId +
+    public void display(){
+        System.out.println("ID: " + studentId +
                 " | First Name: " + super.firstName +
                 " | Last Name: " + (super.lastName != null ? super.lastName : "N/A") +
                 " | Email: " + (super.email != null ? super.email : "N/A") +
                 " | Batch: " + batch +
-                " | Age: " + super.age;
+                " | Age: " + super.age);
     }
 
 }
