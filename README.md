@@ -112,16 +112,57 @@ Enter your choice:
 2. Display all students
 3. Deactivate a student
 4. Back
+=== Course Menu ===
+Enter choice
+1. Add new course
+2. Display all courses
+3. Activate or deactivate a course
+4. Back
+=== Enrollment Menu ===
+Enter choice
+1. Add new enrollment
+2. Display all enrollments for a student
+3. Update employment status
+4. Back
 ```
 
 ```
-ID: 3 | First Name: Rahul | Last Name: Sharma | Email: rahul@mail.com | Batch: 12 | Age: 22
+=== Student details ===
+ID: 1 | First Name: Subramanian | Last Name: Segaran | Email: subseg1107@gmail.com | Batch: 18 | Age: 23
+ID: 2 | First Name: Subu | Last Name: N/A | Email: N/A | Batch: 18 | Age: 23
 ```
 
 ```
-StudentId: 3 | CourseId: 2 | Status: CANCELLED
+=== Course details ===
+CourseId: 1 | Name: Java fundamentals | Description: Basics of Java and OOPS concepts | Duration: 6 weeks
+CourseId: 2 | Name: DSA | Description: Basics of data structures and algorithms | Duration: 16 weeks
 ```
 
+```
+=== Enrollments details ===
+StudentId: 1 | CourseId: 1 | Status: ENROLLED
+StudentId: 1 | CourseId: 2 | Status: ENROLLED
+
+=== Course Menu ===
+Enter choice
+1. Add new course
+2. Display all courses
+3. Activate or deactivate a course
+4. Back
+3
+Enter course id:
+2
+1. Activate course
+2. Deactivate course
+Enter status choice:
+2
+All enrollments cancelled for course 2
+Deactivated course successfully!
+
+=== Enrollments details ===
+StudentId: 1 | CourseId: 1 | Status: ENROLLED
+StudentId: 1 | CourseId: 2 | Status: CANCELLED
+```
 ---
 
 ## 💡 Design Decisions
