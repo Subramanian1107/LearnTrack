@@ -92,7 +92,7 @@ public class StudentService {
 
     }
     private void displayStudents(){
-        System.out.println("Student details");
+        System.out.println("\n=== Student details ===");
         for(Student s : repository.getAllStudents()){
             if(s.getStatus())
                 s.display();

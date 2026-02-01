@@ -25,7 +25,7 @@ public class EnrollmentService {
 
     public void enrollmentMenu(){
         int choice;
-        System.out.println("---Enrollment Menu---");
+        System.out.println("=== Enrollment Menu ===");
         do{
             System.out.println("Enter choice");
             System.out.println("1. Add new enrollment");
@@ -101,7 +101,7 @@ public class EnrollmentService {
             return;
         }
 
-        System.out.println("\n--- Enrollments ---");
+        System.out.println("\n=== Enrollments details ===");
         for (Enrollment e : enrollments) {
             System.out.println(e);
         }

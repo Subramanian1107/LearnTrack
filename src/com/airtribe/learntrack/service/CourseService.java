@@ -22,7 +22,7 @@ public class CourseService {
 
     public void courseMenu(){
         int choice;
-        System.out.println("---Course Menu---");
+        System.out.println("=== Course Menu ===");
         do{
             System.out.println("Enter choice");
             System.out.println("1. Add new course");
@@ -64,6 +64,7 @@ public class CourseService {
     }
     private void displayAllCourses(){
         // Displaying all active courses
+        System.out.println("\n=== Course details ===");
         for(Course course: repository.getAllCourses()){
             if(course.getStatus())
                 System.out.println(course);
